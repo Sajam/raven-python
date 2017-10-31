@@ -65,6 +65,8 @@ Raven = None
 if sys.version_info >= (3, 2):
     basestring = str
 
+sentry_exceptions_logger = logging.getLogger('sentry_exceptions')
+
 
 def get_excepthook_client():
     hook = sys.excepthook
@@ -274,7 +276,7 @@ class Client(object):
             __excepthook__ = sys.excepthook
 
         def handle_exception(*exc_info):
-            self.captureException(exc_info=exc_info, level='fatal')
+            sentry_exceptions_logger.exception(*exc_info)
             __excepthook__(*exc_info)
         handle_exception.raven_client = self
         sys.excepthook = handle_exception
