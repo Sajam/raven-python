@@ -276,7 +276,7 @@ class Client(object):
             __excepthook__ = sys.excepthook
 
         def handle_exception(*exc_info):
-            sentry_exceptions_logger.exception(*exc_info)
+            sentry_exceptions_logger.exception('{}: {}'.format(exc_info[0], exc_info[1]))
             __excepthook__(*exc_info)
         handle_exception.raven_client = self
         sys.excepthook = handle_exception
